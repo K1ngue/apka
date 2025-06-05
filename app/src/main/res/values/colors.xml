@@ -12,7 +12,9 @@
     <color name="meeting_soon">#FFFFEB3B</color>
     <color name="meeting_future">#FF4CAF50</color>
     <color name="button_gray">#424242</color>
+    <color name="card_border_gray">#666666</color>
     <color name="calendar_selected_day_bg">#FF6200EE</color>
     <color name="calendar_highlight">#FF6200EE</color>
     <color name="calendar_selected_text">#FFFFFF</color>
+    <color name="current_day_border">#2196F3</color>
 </resources>

@@ -199,108 +199,68 @@ public class CustomCalendarView extends LinearLayout {
 
         Calendar calendar = (Calendar) currentDate.clone();
         calendar.set(Calendar.DAY_OF_MONTH, 1);
+        int monthBeginningCell = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7;
+        calendar.add(Calendar.DAY_OF_MONTH, -monthBeginningCell);
 
-        int firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        int offset = firstDayOfWeek == Calendar.SUNDAY ? 6 : firstDayOfWeek - 2;
-        calendar.add(Calendar.DAY_OF_MONTH, -offset);
+        Calendar today = Calendar.getInstance();
 
         for (int i = 0; i < 42; i++) {
             DayView dayView = new DayView(getContext());
             dayView.setDate(calendar);
+            dayView.setCurrentMonth(calendar.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH));
+            
+            // Sprawdź czy to dzisiejszy dzień
+            boolean isToday = calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+                            calendar.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
+                            calendar.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH);
+            
+            if (isToday) {
+                dayView.setBackgroundResource(R.drawable.current_day_background);
+            }
 
-            boolean isCurrentMonth = calendar.get(Calendar.MONTH) == currentDate.get(Calendar.MONTH);
-            dayView.setCurrentMonth(isCurrentMonth);
-
+            // Sprawdź czy są spotkania na ten dzień
             String dateKey = String.format("%d-%02d-%02d",
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH) + 1,
                 calendar.get(Calendar.DAY_OF_MONTH));
             
-            List<Meeting> meetings = meetingMap.get(dateKey);
-            if (meetings != null && !meetings.isEmpty()) {
+            if (meetingMap.containsKey(dateKey) && !meetingMap.get(dateKey).isEmpty()) {
                 dayView.setHasMeeting(true);
-                
-                // Find the most important meeting (future over past)
-                Calendar now = Calendar.getInstance();
-                Meeting mostImportantMeeting = null;
-                boolean hasFutureMeeting = false;
-                
-                for (Meeting meeting : meetings) {
-                    Calendar meetingTime = Calendar.getInstance();
-                    meetingTime.setTimeInMillis(meeting.getDate());
-                    meetingTime.set(Calendar.HOUR_OF_DAY, meeting.getHour());
-                    meetingTime.set(Calendar.MINUTE, meeting.getMinute());
-                    
-                    if (meetingTime.after(now)) {
-                        hasFutureMeeting = true;
-                        if (mostImportantMeeting == null) {
-                            mostImportantMeeting = meeting;
-                        } else {
-                            Calendar currentMostImportant = Calendar.getInstance();
-                            currentMostImportant.setTimeInMillis(mostImportantMeeting.getDate());
-                            currentMostImportant.set(Calendar.HOUR_OF_DAY, mostImportantMeeting.getHour());
-                            currentMostImportant.set(Calendar.MINUTE, mostImportantMeeting.getMinute());
-                            
-                            if (meetingTime.before(currentMostImportant)) {
-                                mostImportantMeeting = meeting;
-                            }
-                        }
-                    }
-                }
-                
-                // If no future meetings found, use the latest past meeting
-                if (!hasFutureMeeting) {
+                List<Meeting> meetings = meetingMap.get(dateKey);
+                if (meetings != null && !meetings.isEmpty()) {
+                    // Znajdź najbliższe spotkanie
+                    Meeting nextMeeting = meetings.get(0);
                     for (Meeting meeting : meetings) {
-                        if (mostImportantMeeting == null) {
-                            mostImportantMeeting = meeting;
-                        } else {
-                            Calendar meetingTime = Calendar.getInstance();
-                            meetingTime.setTimeInMillis(meeting.getDate());
-                            meetingTime.set(Calendar.HOUR_OF_DAY, meeting.getHour());
-                            meetingTime.set(Calendar.MINUTE, meeting.getMinute());
-                            
-                            Calendar currentMostImportant = Calendar.getInstance();
-                            currentMostImportant.setTimeInMillis(mostImportantMeeting.getDate());
-                            currentMostImportant.set(Calendar.HOUR_OF_DAY, mostImportantMeeting.getHour());
-                            currentMostImportant.set(Calendar.MINUTE, mostImportantMeeting.getMinute());
-                            
-                            if (meetingTime.after(currentMostImportant)) {
-                                mostImportantMeeting = meeting;
-                            }
+                        if (meeting.getDate() < nextMeeting.getDate()) {
+                            nextMeeting = meeting;
                         }
                     }
+                    dayView.setMeetingTime(nextMeeting.getDate());
                 }
-                
-                if (mostImportantMeeting != null) {
-                    dayView.setMeetingTime(mostImportantMeeting.getDate());
-                }
-            } else {
-                dayView.setHasMeeting(false);
             }
 
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.width = 0;
-            params.height = GridLayout.LayoutParams.WRAP_CONTENT;
-            params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-            dayView.setLayoutParams(params);
-
-            final Calendar finalDate = (Calendar) calendar.clone();
+            final Calendar finalCalendar = (Calendar) calendar.clone();
             dayView.setOnClickListener(v -> {
                 if (selectedDayView != null) {
                     selectedDayView.setSelected(false);
                 }
                 dayView.setSelected(true);
                 selectedDayView = dayView;
-                currentDate.setTimeInMillis(finalDate.getTimeInMillis());
                 
                 if (dateSelectedListener != null) {
                     dateSelectedListener.onDateSelected(
-                        finalDate.get(Calendar.YEAR),
-                        finalDate.get(Calendar.MONTH),
-                        finalDate.get(Calendar.DAY_OF_MONTH)
+                        finalCalendar.get(Calendar.YEAR),
+                        finalCalendar.get(Calendar.MONTH),
+                        finalCalendar.get(Calendar.DAY_OF_MONTH)
                     );
                 }
             });
+
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.width = 0;
+            params.height = GridLayout.LayoutParams.WRAP_CONTENT;
+            params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+            dayView.setLayoutParams(params);
 
             daysGrid.addView(dayView);
             calendar.add(Calendar.DAY_OF_MONTH, 1);

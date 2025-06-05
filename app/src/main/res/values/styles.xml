@@ -20,4 +20,10 @@
         <item name="android:textColor">@color/calendar_selected_text</item>
         <item name="android:background">@color/calendar_highlight</item>
     </style>
+
+    <!-- Styl dla aktualnego dnia -->
+    <style name="CurrentDayTheme">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/current_day_background</item>
+    </style>
 </resources> 

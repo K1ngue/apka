@@ -3,14 +3,16 @@ package com.example.meetingassistant.calendar;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import com.example.meetingassistant.R;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
-public class DayView extends View {
+public class DayView extends TextView {
     private Calendar date;
     private boolean hasMeeting;
     private boolean isSelected;
@@ -27,6 +29,10 @@ public class DayView extends View {
     }
 
     private void init() {
+        setGravity(Gravity.CENTER);
+        setPadding(8, 8, 8, 8);
+        setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+
         float density = getResources().getDisplayMetrics().density;
         float textSizePx = TEXT_SIZE_DP * density;
 
@@ -46,6 +52,9 @@ public class DayView extends View {
 
     public void setHasMeeting(boolean hasMeeting) {
         this.hasMeeting = hasMeeting;
+        if (hasMeeting && !isSelected) {
+            setBackgroundResource(R.drawable.meeting_day_background);
+        }
         invalidate();
     }
 
@@ -55,7 +64,13 @@ public class DayView extends View {
     }
 
     public void setSelected(boolean selected) {
-        this.isSelected = selected;
+        isSelected = selected;
+        if (selected) {
+            setTextAppearance(getContext(), R.style.SelectedDayTheme);
+        } else {
+            setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            setBackground(null);
+        }
         invalidate();
     }
 
@@ -125,5 +140,13 @@ public class DayView extends View {
 
     public Calendar getDate() {
         return date;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        setTextColor(ContextCompat.getColor(getContext(), 
+            enabled ? R.color.white : R.color.white));
+        setAlpha(enabled ? 1.0f : 0.3f);
     }
 } 
