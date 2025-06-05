@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="navigation_meetings" type="id"/>
+    <item name="navigation_map" type="id"/>
+    <item name="navigation_settings" type="id"/>
+    <item name="textViewMinutesBefore" type="id"/>
+    <item name="buttonDelete" type="id"/>
+</resources> 
