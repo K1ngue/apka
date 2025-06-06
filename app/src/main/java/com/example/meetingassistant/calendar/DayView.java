@@ -3,20 +3,24 @@ package com.example.meetingassistant.calendar;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import com.example.meetingassistant.R;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
-public class DayView extends View {
+public class DayView extends TextView {
     private Calendar date;
     private boolean hasMeeting;
     private boolean isSelected;
     private boolean isCurrentMonth;
+    private boolean isToday;
     private Paint textPaint;
     private Paint backgroundPaint;
+    private Paint todayPaint;
     private static final float TEXT_SIZE_DP = 14f;
     private static final float CIRCLE_PADDING_DP = 4f;
     private long meetingTimeInMillis;
@@ -27,6 +31,10 @@ public class DayView extends View {
     }
 
     private void init() {
+        setGravity(Gravity.CENTER);
+        setPadding(8, 8, 8, 8);
+        setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+
         float density = getResources().getDisplayMetrics().density;
         float textSizePx = TEXT_SIZE_DP * density;
 
@@ -37,6 +45,11 @@ public class DayView extends View {
 
         backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         backgroundPaint.setStyle(Paint.Style.FILL);
+
+        todayPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        todayPaint.setStyle(Paint.Style.STROKE);
+        todayPaint.setStrokeWidth(2 * density);
+        todayPaint.setColor(ContextCompat.getColor(getContext(), R.color.current_day_border));
     }
 
     public void setDate(Calendar date) {
@@ -55,12 +68,22 @@ public class DayView extends View {
     }
 
     public void setSelected(boolean selected) {
-        this.isSelected = selected;
+        isSelected = selected;
+        if (selected) {
+            setTextAppearance(getContext(), R.style.SelectedDayTheme);
+        } else {
+            setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
         invalidate();
     }
 
     public void setCurrentMonth(boolean currentMonth) {
         this.isCurrentMonth = currentMonth;
+        invalidate();
+    }
+
+    public void setIsToday(boolean isToday) {
+        this.isToday = isToday;
         invalidate();
     }
 
@@ -102,6 +125,11 @@ public class DayView extends View {
             canvas.drawCircle(centerX, centerY, radius, backgroundPaint);
         }
 
+        // Draw today indicator
+        if (isToday) {
+            canvas.drawCircle(centerX, centerY, radius, todayPaint);
+        }
+
         // Set text color
         if (!isCurrentMonth) {
             textPaint.setAlpha(128); // 50% transparency
@@ -125,5 +153,13 @@ public class DayView extends View {
 
     public Calendar getDate() {
         return date;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        setTextColor(ContextCompat.getColor(getContext(), 
+            enabled ? R.color.white : R.color.white));
+        setAlpha(enabled ? 1.0f : 0.3f);
     }
 } 
