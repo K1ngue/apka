@@ -42,6 +42,8 @@
             android:inputType="textPersonName"
             android:textColor="@color/white"
             android:textColorHint="#80FFFFFF"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
             android:layout_marginBottom="4dp"/>
 
         <TextView
@@ -72,6 +74,8 @@
             android:inputType="textPersonName"
             android:textColor="@color/white"
             android:textColorHint="#80FFFFFF"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
             android:layout_marginBottom="4dp"/>
 
         <TextView
@@ -102,6 +106,8 @@
             android:inputType="text"
             android:textColor="@color/white"
             android:textColorHint="#80FFFFFF"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
             android:layout_marginBottom="4dp"/>
 
         <TextView
@@ -132,6 +138,8 @@
             android:inputType="text"
             android:textColor="@color/white"
             android:textColorHint="#80FFFFFF"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
             android:layout_marginBottom="4dp"/>
 
         <TextView
@@ -162,6 +170,8 @@
             android:inputType="text"
             android:textColor="@color/white"
             android:textColorHint="#80FFFFFF"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
             android:layout_marginBottom="4dp"/>
 
         <TextView
@@ -189,7 +199,9 @@
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/black">
+            app:cardBackgroundColor="@color/black"
+            app:strokeColor="@color/card_border_gray"
+            app:strokeWidth="1dp">
 
             <com.example.meetingassistant.calendar.CustomCalendarView
                 android:id="@+id/calendarView"
@@ -248,7 +260,9 @@
                 android:inputType="number"
                 android:minHeight="48dp"
                 android:textColor="@color/white"
-                android:textColorHint="#80FFFFFF"/>
+                android:textColorHint="#80FFFFFF"
+                android:background="@drawable/edit_text_background"
+                android:padding="8dp"/>
 
             <Button
                 android:id="@+id/buttonAddNotification"

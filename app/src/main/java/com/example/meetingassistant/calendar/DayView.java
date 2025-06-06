@@ -59,6 +59,9 @@ public class DayView extends TextView {
 
     public void setHasMeeting(boolean hasMeeting) {
         this.hasMeeting = hasMeeting;
+        if (hasMeeting && !isSelected) {
+            setBackgroundResource(R.drawable.meeting_day_background);
+        }
         invalidate();
     }
 

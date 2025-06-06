@@ -8,9 +8,11 @@
 .externalNativeBuild
 .cxx
 local.properties
+app/build/
+.gradle/
+.idea/
 *.apk
 *.aab
 /app/release
 /app/debug
-.idea/
 *.hprof

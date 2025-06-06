@@ -37,6 +37,10 @@
             android:hint="Wpisz imię"
             android:inputType="textPersonName"
             android:minHeight="48dp"
+            android:textColor="@color/white"
+            android:textColorHint="#80FFFFFF"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
             android:layout_marginBottom="16dp"/>
 
         <TextView
@@ -64,6 +68,10 @@
             android:hint="Wpisz nazwisko"
             android:inputType="textPersonName"
             android:minHeight="48dp"
+            android:textColor="@color/white"
+            android:textColorHint="#80FFFFFF"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
             android:layout_marginBottom="16dp"/>
 
         <TextView
@@ -91,6 +99,10 @@
             android:hint="Wpisz nazwę ulicy"
             android:inputType="textPostalAddress"
             android:minHeight="48dp"
+            android:textColor="@color/white"
+            android:textColorHint="#80FFFFFF"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
             android:layout_marginBottom="16dp"/>
 
         <TextView
@@ -118,6 +130,10 @@
             android:hint="Wpisz numer"
             android:inputType="text"
             android:minHeight="48dp"
+            android:textColor="@color/white"
+            android:textColorHint="#80FFFFFF"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
             android:layout_marginBottom="16dp"/>
 
         <TextView
@@ -145,6 +161,10 @@
             android:hint="Wpisz nazwę miasta"
             android:inputType="text"
             android:minHeight="48dp"
+            android:textColor="@color/white"
+            android:textColorHint="#80FFFFFF"
+            android:background="@drawable/edit_text_background"
+            android:padding="8dp"
             android:layout_marginBottom="16dp"/>
 
         <TextView
@@ -162,7 +182,9 @@
             android:layout_marginBottom="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/black">
+            app:cardBackgroundColor="@color/black"
+            app:strokeColor="@color/card_border_gray"
+            app:strokeWidth="1dp">
 
             <com.example.meetingassistant.calendar.CustomCalendarView
                 android:id="@+id/calendarView"
@@ -186,7 +208,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:timePickerMode="spinner" />
+            android:timePickerMode="spinner"
+            android:theme="@style/TimePickerTheme" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -210,7 +233,11 @@
                 android:layout_weight="1"
                 android:hint="Ile minut przed"
                 android:inputType="number"
-                android:minHeight="48dp"/>
+                android:minHeight="48dp"
+                android:textColor="@color/white"
+                android:textColorHint="#80FFFFFF"
+                android:background="@drawable/edit_text_background"
+                android:padding="8dp"/>
 
             <Button
                 android:id="@+id/buttonAddNotification"
